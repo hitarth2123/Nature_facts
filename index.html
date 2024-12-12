@@ -1,257 +1,124 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Nature Facts</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            display: flex;
-            background-color: #f0f8f0;
-        }
+  <meta charset="UTF-8">
+  <title>Nature Facts for Kids</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f8ff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+      
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+      }
+      
+    h1 {
+        text-align: center;
+        color: #006400;
+        font-size: 36px;
+        margin-bottom: 30px;
+      }
+  
+      .switch-container {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+  
+      #switch-btn {
+        padding: 10px 20px;
+        font-size: 20px;
+        background-color: #ffa500;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+      }
 
-        #canvas-container {
-            width: 40%;
-            height: 100vh;
-            position: fixed;
-            left: 0;
-        }
+#switch-btn:hover {
+  transform: scale(1.1);
+}
 
-        .content-container {
-            width: 60%;
-            margin-left: 40%;
-            padding: 20px;
-        }
+#fact-container {
+  font-size: 24px;
+  line-height: 1.5;
+  color: #333;
+  text-align: center;
+  padding: 20px;
+  background-color: #f0fff0;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  animation: fade-in 0.5s ease;
+}
 
-        h1 {
-            text-align: center;
-            color: #2c5a2c;
-        }
-
-        .button-section {
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        #next-fact-btn {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .fact-card {
-            background-color: white;
-            padding: 20px;
-            margin: 10px 0;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .fact-category {
-            display: inline-block;
-            padding: 4px 8px;
-            background-color: #4CAF50;
-            color: white;
-            border-radius: 4px;
-            font-size: 0.8em;
-            margin-bottom: 8px;
-        }
-    </style>
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+</style>
 </head>
 <body>
-    <div id="canvas-container"></div>
-    <div class="content-container">
-        <h1>3D Nature Facts</h1>
-        <div class="button-section">
-            <button id="next-fact-btn">Next Fact</button>
-        </div>
-        <div id="fact-container"></div>
+  <div class="container">
+    <h1>Nature Facts </h1>
+    <div class="switch-container">
+      <button id="switch-btn">Switch Fact</button>
     </div>
+    <div id="fact-container"></div>
+  </div>
 
-    <script>
-        // Three.js scene setup
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth * 0.4 / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer();
-        renderer.setSize(window.innerWidth * 0.4, window.innerHeight);
-        document.getElementById('canvas-container').appendChild(renderer.domElement);
+  <script>
+    const facts = [
+      { "fact": "The Amazon rainforest is the largest rainforest in the world, covering an area of around 2.1 million square miles." },
+      { "fact": "The Great Barrier Reef is the world's largest coral reef system, composed of over 2,900 individual reefs and 900 islands." },
+      { "fact": "Mount Everest, at 29,029 feet (8,848 meters) above sea level, is the highest mountain on Earth." },
+      { "fact": "The Sahara Desert is the world's largest hot desert, covering an area of about 3.6 million square miles." },
+      { "fact": "The blue whale is the largest animal known to have ever existed, with a maximum recorded length of 98 feet (30 meters)." },
+      { "fact": "The fastest land animal is the cheetah, which can reach top speeds of around 70 miles per hour (113 km/h)." },
+      { "fact": "The oldest living tree on Earth is a Great Basin bristlecone pine located in the White Mountains of California, believed to be over 5,000 years old." },
+      { "fact": "The deepest point in the world's oceans is the Challenger Deep in the Mariana Trench, which is around 36,070 feet (10,994 meters) deep." },
+      { "fact": "The highest waterfall in the world is Angel Falls in Venezuela, with a total height of 3,212 feet (979 meters)." },
+      { "fact": "The largest desert on Earth is the Antarctic Desert, covering an area of about 5.5 million square miles." },
+      { "fact": "The fastest wind speed ever recorded was 253 miles per hour (407 km/h) during the passage of Cyclone Olivia in 1996." },
+      { "fact": "The loudest animal on Earth is the sperm whale, whose clicks can reach up to 230 decibels, louder than a jet engine." },
+      { "fact": "The tallest living tree species is the coast redwood, with some specimens reaching over 370 feet (113 meters) in height." },
+      { "fact": "The hottest temperature ever recorded on Earth was 154°F (67.8°C) in Death Valley, California, in 1913." },
+      { "fact": "The largest known living thing on Earth is a fungus called the Armillaria ostoyae, which covers an area of around 3.7 square miles in Oregon." },
+      { "fact": "The smallest known mammal is the bumblebee bat, which weighs only about 0.05 ounces (1.4 grams) and is found in Thailand and Myanmar." },
+      { "fact": "The longest river in the world is the Nile River, which stretches over 4,132 miles (6,650 km) long." },
+      { "fact": "The largest volcano on Earth is Mauna Loa in Hawaii, which covers an area of around 2,000 square miles (5,200 square km)." },
+      { "fact": "The largest lake on Earth is the Caspian Sea, which covers an area of around 143,000 square miles (371,000 square km)." },
+      { "fact": "The largest glacier on Earth is the Lambert Glacier in Antarctica, which covers an area of around 3,200 square miles (8,300 square km)." }
+    ];
 
-        // Create a simple Earth-like sphere
-        const geometry = new THREE.SphereGeometry(2, 32, 32);
-        const material = new THREE.MeshPhongMaterial({
-            color: 0x4CAF50,
-            shininess: 100
-        });
-        const sphere = new THREE.Mesh(geometry, material);
-        scene.add(sphere);
+   
+    let currentFactIndex = 0;
+    const factContainer = document.getElementById("fact-container");
+    const switchBtn = document.getElementById("switch-btn");
 
-        // Add lighting
-        const light = new THREE.PointLight(0xffffff, 1, 100);
-        light.position.set(10, 10, 10);
-        scene.add(light);
-        scene.add(new THREE.AmbientLight(0x404040));
+    function displayFact() {
+      factContainer.textContent = facts[currentFactIndex].fact;
+    }
 
-        camera.position.z = 5;
+    displayFact();
 
-        // Animation function
-        function animate() {
-            requestAnimationFrame(animate);
-            sphere.rotation.x += 0.001;
-            sphere.rotation.y += 0.002;
-            renderer.render(scene, camera);
-        }
-        animate();
-
-        // Nature facts functionality
-        const natureFacts = {
-            
-    "nature_facts": [
-        {
-            "id": 1,
-            "fact": "A single tree can absorb up to 48 pounds of carbon dioxide per year",
-            "category": "Trees"
-        },
-        {
-            "id": 2,
-            "fact": "Honeybees can recognize human faces",
-            "category": "Insects"
-        },
-        {
-            "id": 3,
-            "fact": "The Great Barrier Reef is the largest living structure on Earth",
-            "category": "Marine"
-        },
-        {
-            "id": 4,
-            "fact": "Lightning strikes Earth about 100 times every second",
-            "category": "Weather"
-        },
-        {
-            "id": 5,
-            "fact": "Sharks have existed longer than trees on Earth",
-            "category": "Animals"
-        },
-        {
-            "id": 6,
-            "fact": "A single cloud can weigh more than 1 million pounds",
-            "category": "Weather"
-        },
-        {
-            "id": 7,
-            "fact": "Sloths can hold their breath for up to 40 minutes underwater",
-            "category": "Animals"
-        },
-        {
-            "id": 8,
-            "fact": "Butterflies taste with their feet",
-            "category": "Insects"
-        },
-        {
-            "id": 9,
-            "fact": "The Amazon rainforest produces about 20% of the world's oxygen",
-            "category": "Ecosystems"
-        },
-        {
-            "id": 10,
-            "fact": "Octopuses have three hearts",
-            "category": "Marine"
-        },
-        {
-            "id": 11,
-            "fact": "Some bamboo species can grow up to 35 inches in a single day",
-            "category": "Plants"
-        },
-        {
-            "id": 12,
-            "fact": "Hummingbirds are the only birds that can fly backwards",
-            "category": "Birds"
-        },
-        {
-            "id": 13,
-            "fact": "The Arctic is warming twice as fast as the global average",
-            "category": "Climate"
-        },
-        {
-            "id": 14,
-            "fact": "A single sequoia tree can produce up to 40 million seeds per year",
-            "category": "Trees"
-        },
-        {
-            "id": 15,
-            "fact": "Ants never sleep and don't have lungs",
-            "category": "Insects"
-        },
-        {
-            "id": 16,
-            "fact": "The deepest point in the ocean is about 36,070 feet deep",
-            "category": "Geography"
-        },
-        {
-            "id": 17,
-            "fact": "Some species of fungi can create zombie insects",
-            "category": "Fungi"
-        },
-        {
-            "id": 18,
-            "fact": "Ravens can learn to talk better than some parrots",
-            "category": "Birds"
-        },
-        {
-            "id": 19,
-            "fact": "The Earth's core is as hot as the surface of the sun",
-            "category": "Geology"
-        },
-        {
-            "id": 20,
-            "fact": "Some trees communicate with each other through an underground fungal network",
-            "category": "Ecosystems"
-        }
-    ]
-
-
-        };
-
-        let currentFactIndex = -1;
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const factContainer = document.getElementById('fact-container');
-            const nextFactBtn = document.getElementById('next-fact-btn');
-
-            function displayNextFact() {
-                currentFactIndex = (currentFactIndex + 1) % natureFacts.nature_facts.length;
-                const fact = natureFacts.nature_facts[currentFactIndex];
-                
-                factContainer.innerHTML = `
-                    <div class="fact-card">
-                        <div class="fact-category">${fact.category}</div>
-                        <div class="fact-text">${fact.fact}</div>
-                    </div>
-                `;
-            }
-
-            // Initial display
-            displayNextFact();
-
-            // Button click event
-            nextFactBtn.addEventListener('click', displayNextFact);
-        });
-
-        // Handle window resize
-        window.addEventListener('resize', function() {
-            const width = window.innerWidth * 0.4;
-            const height = window.innerHeight;
-            camera.aspect = width / height;
-            camera.updateProjectionMatrix();
-            renderer.setSize(width, height);
-        });
+    switchBtn.addEventListener("click", () => {
+      currentFactIndex = (currentFactIndex + 1) % facts.length;
+     displayFact();
+        playAudio();
+      });
     </script>
-</body>
+  </body>
 </html>
