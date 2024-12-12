@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nature Facts</title>
+    <style>
+        /* Previous CSS styles remain the same */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f8f0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c5a2c;
+        }
+
+        .button-section {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        #next-fact-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #next-fact-btn:hover {
+            background-color: #45a049;
+        }
+
+        .fact-card {
+            background-color: white;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .fact-category {
+            display: inline-block;
+            padding: 4px 8px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 4px;
+            font-size: 0.8em;
+            margin-bottom: 8px;
+        }
+
+        .fact-text {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Amazing Nature Facts</h1>
+        <div class="button-section">
+            <button id="next-fact-btn">Show Next Fact</button>
+        </div>
+        <div id="fact-container"></div>
+    </div>
+
+    <script>
+        const natureFacts = {
+            
+                "nature_facts": [
+                    {
+                        "id": 1,
+                        "fact": "A single tree can absorb up to 48 pounds of carbon dioxide per year",
+                        "category": "Trees"
+                    },
+                    {
+                        "id": 2,
+                        "fact": "Honeybees can recognize human faces",
+                        "category": "Insects"
+                    },
+                    {
+                        "id": 3,
+                        "fact": "The Great Barrier Reef is the largest living structure on Earth",
+                        "category": "Marine"
+                    },
+                    {
+                        "id": 4,
+                        "fact": "Lightning strikes Earth about 100 times every second",
+                        "category": "Weather"
+                    },
+                    {
+                        "id": 5,
+                        "fact": "Sharks have existed longer than trees on Earth",
+                        "category": "Animals"
+                    },
+                    {
+                        "id": 6,
+                        "fact": "A single cloud can weigh more than 1 million pounds",
+                        "category": "Weather"
+                    },
+                    {
+                        "id": 7,
+                        "fact": "Sloths can hold their breath for up to 40 minutes underwater",
+                        "category": "Animals"
+                    },
+                    {
+                        "id": 8,
+                        "fact": "Butterflies taste with their feet",
+                        "category": "Insects"
+                    },
+                    {
+                        "id": 9,
+                        "fact": "The Amazon rainforest produces about 20% of the world's oxygen",
+                        "category": "Ecosystems"
+                    },
+                    {
+                        "id": 10,
+                        "fact": "Octopuses have three hearts",
+                        "category": "Marine"
+                    },
+                    {
+                        "id": 11,
+                        "fact": "Some bamboo species can grow up to 35 inches in a single day",
+                        "category": "Plants"
+                    },
+                    {
+                        "id": 12,
+                        "fact": "Hummingbirds are the only birds that can fly backwards",
+                        "category": "Birds"
+                    },
+                    {
+                        "id": 13,
+                        "fact": "The Arctic is warming twice as fast as the global average",
+                        "category": "Climate"
+                    },
+                    {
+                        "id": 14,
+                        "fact": "A single sequoia tree can produce up to 40 million seeds per year",
+                        "category": "Trees"
+                    },
+                    {
+                        "id": 15,
+                        "fact": "Ants never sleep and don't have lungs",
+                        "category": "Insects"
+                    },
+                    {
+                        "id": 16,
+                        "fact": "The deepest point in the ocean is about 36,070 feet deep",
+                        "category": "Geography"
+                    },
+                    {
+                        "id": 17,
+                        "fact": "Some species of fungi can create zombie insects",
+                        "category": "Fungi"
+                    },
+                    {
+                        "id": 18,
+                        "fact": "Ravens can learn to talk better than some parrots",
+                        "category": "Birds"
+                    },
+                    {
+                        "id": 19,
+                        "fact": "The Earth's core is as hot as the surface of the sun",
+                        "category": "Geology"
+                    },
+                    {
+                        "id": 20,
+                        "fact": "Some trees communicate with each other through an underground fungal network",
+                        "category": "Ecosystems"
+                    }
+                ]
+            
+            
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const factContainer = document.getElementById('fact-container');
+            const nextFactBtn = document.getElementById('next-fact-btn');
+            let currentFactIndex = -1;
+
+            function getRandomFact() {
+                let newIndex;
+                do {
+                    newIndex = Math.floor(Math.random() * natureFacts.nature_facts.length);
+                } while (newIndex === currentFactIndex && natureFacts.nature_facts.length > 1);
+                
+                currentFactIndex = newIndex;
+                return natureFacts.nature_facts[currentFactIndex];
+            }
+
+            function displayFact() {
+                const fact = getRandomFact();
+                factContainer.innerHTML = `
+                    <div class="fact-card">
+                        <div class="fact-category">${fact.category}</div>
+                        <div class="fact-text">${fact.fact}</div>
+                    </div>
+                `;
+            }
+
+            // Initial display
+            displayFact();
+
+            // Button click event listener
+            nextFactBtn.addEventListener('click', displayFact);
+        });
+    </script>
+</body>
+</html>
